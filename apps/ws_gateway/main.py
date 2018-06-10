@@ -43,7 +43,7 @@ from pyblinktrade.json_encoder import JsonEncoder
 
 import zmq
 from pyblinktrade.message import JsonMessage, InvalidMessageException
-from trade.zmq_client  import TradeClient, TradeClientException
+from apps.trade.zmq_client  import TradeClient, TradeClientException
 
 from pyblinktrade.project_options import ProjectOptions
 
@@ -67,6 +67,19 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from models import Trade
 import urllib
 
+class IndexPageHandler(tornado.websocket.WebSocketHandler):  
+    def check_origin(self, origin):  
+        return True  
+  
+    def open(self):  
+        pass  
+  
+    def on_message(self, message):  
+        self.write_message(u"Your message was: "+message)  
+  
+    def on_close(self):  
+        pass         
+
 class WebSocketHandler(websocket.WebSocketHandler):
 
     def __init__(self, application, request, **kwargs):
@@ -89,7 +102,6 @@ class WebSocketHandler(websocket.WebSocketHandler):
         if self.application.is_tor_node( self.remote_ip ):
             self.honey_pot_connection = True
             application.log('INFO', 'BLOCKED_TOR_NODE', self.remote_ip )
-            return
 
         self.trade_client = TradeClient(
             self.application.zmq_context,
@@ -474,6 +486,7 @@ class WebSocketGatewayApplication(tornado.web.Application):
         self.instance_name = instance_name
 
         handlers = [
+            (r'/hello', IndexPageHandler),
             (r'/', WebSocketHandler),
             (r'/get_deposit(.*)', DepositHandler),
             (r'/_webhook/verification_form', VerificationWebHookHandler),
@@ -644,8 +657,8 @@ class WebSocketGatewayApplication(tornado.web.Application):
             from urllib2 import urlopen
             response = urlopen("https://torstatus.blutmagie.de/ip_list_all.php/Tor_ip_list_ALL.csv")
             self.tor_ip_list_ = set(response.read().splitlines())
-            #self.tor_ip_list_.add('127.0.0.1')
-            self.log('INFO', 'TOR_LIST', str(self.tor_ip_list_))
+            self.tor_ip_list_.add('127.0.0.1')
+            #self.log('INFO', 'TOR_LIST', str(self.tor_ip_list_))
         except:
             pass
 

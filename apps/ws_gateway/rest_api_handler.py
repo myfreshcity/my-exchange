@@ -28,7 +28,7 @@ class RestApiHandler(tornado.web.RequestHandler):
       self.write( json.dumps(ticker))
 
     def _send_order_book(self, symbol):
-       md_subscriber = MarketDataSubscriber.get(symbol, self.application.db_session)
+       md_subscriber = MarketDataSubscriber.get(symbol, self.application)
 
        bids = []
        asks = []

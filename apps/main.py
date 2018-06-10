@@ -35,7 +35,7 @@ def ws_gateway_instance(instance_name, project_options):
 
 def mailer_instance(instance_name, project_options):
   from mailer.main import run_application
-  run_application(project_options, instance_name)
+  #run_application(project_options, instance_name)
 
 
 def main():
@@ -64,6 +64,7 @@ def main():
       p = multiprocessing.Process(name=section_name, target=partial(ws_gateway_instance,section_name, project_options )  )
     elif section_name[:6] == 'mailer':
       p = multiprocessing.Process(name=section_name, target=partial(mailer_instance,section_name, project_options )  )
+
     else:
       raise RuntimeError("Invalid section name")
     processes.append(p)
