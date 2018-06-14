@@ -1,25 +1,20 @@
 #!/usr/bin/env python
 
-import sys
-import os
 import ConfigParser
-import json
-import multiprocessing
-import time
-import logging
 import argparse
-from appdirs import site_config_dir
+import logging
+import multiprocessing
+import os
+import sys
 from functools import partial
 
-from Queue import Queue
-from threading import Thread
+from appdirs import site_config_dir
 
+from pyblinktrade.project_options import ProjectOptions
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 sys.path.insert(0, os.path.join(ROOT_PATH, 'libs'))
 sys.path.insert(0, os.path.join(ROOT_PATH, 'apps'))
-
-from pyblinktrade.project_options import ProjectOptions
 
 
 def trade_instance(instance_name, project_options):
@@ -34,7 +29,7 @@ def ws_gateway_instance(instance_name, project_options):
   run_application(project_options, instance_name)
 
 def mailer_instance(instance_name, project_options):
-  from mailer.main import run_application
+  pass
   #run_application(project_options, instance_name)
 
 

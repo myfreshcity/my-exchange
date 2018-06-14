@@ -31,7 +31,7 @@ import onetimepass
 
 def get_datetime_now(timezone=None):
   #this is just a workaround, so we can test datetime.datetime.now()
-  from trade import get_now
+  from apps.trade import get_now
   return get_now(timezone)
 
 class AlchemyJSONEncoder(json.JSONEncoder):
@@ -2254,8 +2254,8 @@ class Order(Base):
     else:
       self.status = '0' # New Order
 
-    self.has_cxl_qty = (self.cxl_qty > 0)
-    self.has_cum_qty = (self.cum_qty > 0)
+    self.has_cxl_qty = (self.cxl_qty > 0) # 取消的数量
+    self.has_cum_qty = (self.cum_qty > 0) # 使用的数量
     self.has_leaves_qty = (self.leaves_qty > 0)
       
 

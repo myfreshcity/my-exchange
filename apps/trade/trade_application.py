@@ -168,7 +168,7 @@ class TradeApplication(object):
     from execution import OrderMatcher
     from models import Order
 
-    orders = self.db_session.query(Order).filter(Order.status.in_(("0", "1"))).order_by(Order.created)
+    orders = self.db_session.query(Order).filter(Order.status.in_(("0", "1"))).order_by(Order.created).all()
     for order in orders:
       OrderMatcher.get( order.symbol  ).match(self.db_session, order, self.order_matcher_disabled)
 

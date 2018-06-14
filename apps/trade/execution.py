@@ -50,7 +50,7 @@ class ExecutionReport(object):
     resp = {
       'MsgType':'8',
       'OrderID': self.order_id,
-      'ClOrdID': self.client_order_id,
+      'ClOrdID': str(self.client_order_id),
       'ExecID': self.execution_id,
       'ExecType':  self.execution_type,
       'ExecSide': self.execution_side,
@@ -92,6 +92,9 @@ class OrderMatcher(object):
       res += str(order) + '\n'
     return  res[:-1]
 
+  def clean(self):
+    self.buy_side = []
+    self.sell_side = []
 
   def match(self, session, order, order_matcher_disabled=False, broker_fee=0):
     other_side = []
@@ -106,11 +109,11 @@ class OrderMatcher(object):
 
     execution_reports = []
     trades_to_publish = []
-
     execution_side = '1' if order.is_buy else '2'
 
     rpt_order  = ExecutionReport( order, execution_side )
     execution_reports.append( ( order.user_id, rpt_order.toJson() )  )
+
     if order.user_id != order.account_id:
       execution_reports.append( ( order.account_id, rpt_order.toJson() )  )
 
@@ -155,7 +158,7 @@ class OrderMatcher(object):
         else:
           executed_price = counter_order.price
 
-        # let's get the available qty to execute on the order side
+        # let's get the available qty to execute on the order side 校验交易盘余额
         available_qty_on_order_side = order.get_available_qty_to_execute(session,
                                                                          '1' if order.is_buy else '2',
                                                                          executed_qty,
@@ -180,7 +183,7 @@ class OrderMatcher(object):
           break
 
 
-        # let's get the available qty to execute on the counter side
+        # let's get the available qty to execute on the counter side 校验对手盘余额
         available_qty_on_counter_side = counter_order.get_available_qty_to_execute(session,
                                                                                    '1' if counter_order.is_buy else '2',
                                                                                    executed_qty,
@@ -297,11 +300,11 @@ class OrderMatcher(object):
         if counter_order.leaves_qty > 0:
           is_last_match_a_partial_execution_on_counter_order = True
 
-
     md_entry_type = '0' if order.is_buy else '1'
     counter_md_entry_type = '1' if order.is_buy else '0'
 
     # let's include the order in the book if the order is not fully executed.
+    # 盘口列表维护。加入self_side，调整other_side
     if order.leaves_qty > 0:
       insert_pos = bisect.bisect_right(self_side, order)
       self_side.insert( insert_pos, order )
