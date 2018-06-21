@@ -4,13 +4,9 @@ __author__ = 'rodrigo'
 
 import bisect
 
-import json
-import datetime
-from models import Trade, UserEmail
-
-from trade_application import TradeApplication
-
 from market_data_publisher import MarketDataPublisher
+from models import Trade, UserEmail
+from trade_application import TradeApplication
 
 matcher_dict  = {}
 
@@ -236,7 +232,7 @@ class OrderMatcher(object):
 
           def generate_email_subject_and_body( session, order, trade ):
             from json import  dumps
-            from pyblinktrade.json_encoder import  JsonEncoder
+            from apps.pyblinktrade.json_encoder import  JsonEncoder
             from models import Currency
 
             qty_currency = order.symbol[:3]

@@ -1,15 +1,14 @@
 #!/usr/bin/env python
-import os
-import sys
 import ConfigParser
 import argparse
-from appdirs import site_config_dir
+import os
+import sys
 
 ROOT_PATH = os.path.abspath( os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.insert( 0, os.path.join(ROOT_PATH, 'libs'))
 sys.path.insert( 0, os.path.join(ROOT_PATH, 'apps'))
 
-from pyblinktrade.project_options import ProjectOptions
+from apps.pyblinktrade.project_options import ProjectOptions
 from trade_application import TradeApplication
 
 def main():
@@ -31,9 +30,7 @@ def main():
     return
 
 
-  candidates = [ os.path.join(site_config_dir('blinktrade'), 'bitex.ini'),
-                 os.path.expanduser('~/.blinktrade/bitex.ini'),
-                 arguments.config]
+  candidates = [ arguments.config]
   config = ConfigParser.SafeConfigParser()
   config.read( candidates )
 

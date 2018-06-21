@@ -1,21 +1,19 @@
 # -*- coding: utf-8 -*-
 
-import datetime
-from pyblinktrade.message import JsonMessage
-from pyblinktrade.json_encoder import  JsonEncoder
-from copy import deepcopy
-import math
 import json
+import math
+from copy import deepcopy
 
-from models import  User, Order, UserPasswordReset, Deposit, DepositMethods, \
-  NeedSecondFactorException, UserAlreadyExistsException, BrokerDoesNotExistsException, \
-  Withdraw, Broker, Instrument, Currency, Balance, Ledger, Position, ApiAccess
+from pyblinktrade.message import JsonMessage
 
-from execution import OrderMatcher
-
+from apps.pyblinktrade.json_encoder import JsonEncoder
 from decorators import *
-
+from execution import OrderMatcher
+from models import User, Order, UserPasswordReset, Deposit, DepositMethods, \
+    NeedSecondFactorException, UserAlreadyExistsException, BrokerDoesNotExistsException, \
+    Withdraw, Broker, Instrument, Currency, Balance, Ledger, Position, ApiAccess
 from trade_application import TradeApplication
+
 
 def processTestRequest(session, msg):
   return json.dumps({

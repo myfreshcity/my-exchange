@@ -1,18 +1,19 @@
-import sys
-import os
+import datetime
+import json
 import logging
 import logging.handlers
-import zmq
+import os
+import sys
 import time
-import datetime
 import traceback
-
 from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-import json
-from pyblinktrade.json_encoder import JsonEncoder
 
+import zmq
+from sqlalchemy.orm import scoped_session, sessionmaker
+
+from apps.pyblinktrade.json_encoder import JsonEncoder
 from errors import *
+
 
 class TradeApplication(object):
   @classmethod
@@ -163,7 +164,7 @@ class TradeApplication(object):
     self.publish_queue.append([ key, data ])
 
   def run(self):
-    from pyblinktrade.message import JsonMessage, InvalidMessageException
+    from apps.pyblinktrade.message import JsonMessage, InvalidMessageException
     from market_data_publisher import MarketDataPublisher
     from execution import OrderMatcher
     from models import Order

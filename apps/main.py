@@ -8,9 +8,7 @@ import os
 import sys
 from functools import partial
 
-from appdirs import site_config_dir
-
-from pyblinktrade.project_options import ProjectOptions
+from apps.pyblinktrade.project_options import ProjectOptions
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 sys.path.insert(0, os.path.join(ROOT_PATH, 'libs'))
@@ -43,9 +41,7 @@ def main():
   arguments = parser.parse_args()
 
 
-  candidates = [ os.path.join(site_config_dir('blinktrade'), 'bitex.ini'),
-                 os.path.expanduser('~/.blinktrade/bitex.ini'),
-                 arguments.config ]
+  candidates = [ arguments.config ]
 
   config = ConfigParser.SafeConfigParser()
   config.read( candidates )

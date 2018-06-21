@@ -1,5 +1,3 @@
-import os
-import base64
 import json
 import time
 
@@ -9,11 +7,9 @@ from pyblinktrade.signals import Signal
 import zmq
 from zmq.eventloop.zmqstream import ZMQStream
 
-from pyblinktrade.message import JsonMessage
+from apps.pyblinktrade.message import JsonMessage
 
 from models import Trade
-
-from sqlalchemy.orm import scoped_session, sessionmaker
 
 import datetime
 

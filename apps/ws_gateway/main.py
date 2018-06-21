@@ -18,16 +18,15 @@
 #  MA 02110-1301, USA.
 
 
+import logging
 import os
 import sys
-import logging
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.insert(0, os.path.join( os.path.dirname(__file__), '../' ) )
 
 import ConfigParser
 import argparse
-from appdirs import site_config_dir
 
 import tornado.ioloop
 import tornado.web
@@ -35,24 +34,20 @@ import tornado.httpserver
 import tornado.template
 from tornado import websocket
 
-import urllib
 import urllib2
 import json
 import uuid
-from pyblinktrade.json_encoder import JsonEncoder
+from apps.pyblinktrade.json_encoder import JsonEncoder
 
 import zmq
-from pyblinktrade.message import JsonMessage, InvalidMessageException
+from apps.pyblinktrade.message import JsonMessage, InvalidMessageException
 from apps.trade.zmq_client  import TradeClient, TradeClientException
 
-from pyblinktrade.project_options import ProjectOptions
+from apps.pyblinktrade.project_options import ProjectOptions
 
 from time import mktime
 
-from zmq.eventloop.zmqstream import ZMQStream
-
-
-from market_data_helper import MarketDataPublisher, MarketDataSubscriber, generate_md_full_refresh, generate_trade_history, SecurityStatusPublisher, generate_security_status, signal_publish_md_status, signal_publish_md_order_depth_incremental
+from market_data_helper import MarketDataPublisher, MarketDataSubscriber, generate_md_full_refresh, generate_trade_history, SecurityStatusPublisher, generate_security_status
 
 from deposit_hander import DepositHandler
 from process_deposit_handler import ProcessDepositHandler
@@ -723,9 +718,7 @@ def main():
       parser.print_help()
       return
 
-    candidates = [ os.path.join(site_config_dir('blinktrade'), 'bitex.ini'),
-                   os.path.expanduser('~/.blinktrade/bitex.ini'),
-                   arguments.config]
+    candidates = [ arguments.config]
     config = ConfigParser.SafeConfigParser()
     config.read( candidates )
 

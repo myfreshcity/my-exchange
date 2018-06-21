@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys
-import os
-import traceback
-import argparse
 import ConfigParser
-from appdirs import site_config_dir
+import argparse
+import os
+import sys
+import traceback
 
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 sys.path.insert(0, os.path.join( os.path.dirname(__file__), '../' ) )
@@ -13,9 +12,9 @@ sys.path.insert(0, os.path.join( os.path.dirname(__file__), '../' ) )
 import time
 from util import send_email
 
-from pyblinktrade.message_builder import MessageBuilder
-from pyblinktrade.message import JsonMessage
-from pyblinktrade.project_options import ProjectOptions
+from apps.pyblinktrade.message_builder import MessageBuilder
+from apps.pyblinktrade.message import JsonMessage
+from apps.pyblinktrade.project_options import ProjectOptions
 
 import logging, logging.handlers
 
@@ -25,7 +24,8 @@ import zmq
 import mailchimp
 import mandrill
 
-from trade.zmq_client  import TradeClient, TradeClientException
+from apps.trade.zmq_client  import TradeClient
+
 
 def convertCamelCase2Underscore(name):
   import re
@@ -229,9 +229,7 @@ def main():
     parser.print_help()
     return
 
-  candidates = [ os.path.join(site_config_dir('blinktrade'), 'bitex.ini'),
-                 os.path.expanduser('~/.blinktrade/bitex.ini'),
-                 arguments.config]
+  candidates = [ arguments.config]
   config = ConfigParser.SafeConfigParser()
   config.read( candidates )
 
