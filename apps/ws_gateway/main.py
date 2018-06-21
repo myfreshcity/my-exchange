@@ -486,7 +486,7 @@ class WebSocketGatewayApplication(tornado.web.Application):
         self.instance_name = instance_name
 
         handlers = [
-            (r'/hello', IndexPageHandler),
+            (r'/tapi/v1/message', WebSocketHandler),
             (r'/', WebSocketHandler),
             (r'/get_deposit(.*)', DepositHandler),
             (r'/_webhook/verification_form', VerificationWebHookHandler),

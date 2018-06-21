@@ -537,7 +537,8 @@ def processSecurityListRequest(session, msg):
     response['Instruments'].append({
       'Symbol': instrument.symbol,
       'Currency': instrument.currency,
-      'Description': instrument.description
+      'Description': instrument.description,
+      'Market': 'BLINK'
     })
   for currency in currencies:
     response['Currencies'].append({

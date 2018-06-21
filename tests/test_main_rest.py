@@ -1,7 +1,7 @@
 import requests
 
 if __name__ == "__main__":
-    r = requests.post('http://localhost:8445/api',
+    r = requests.post('http://localhost:8445/tapi/v1/message',
                      data={
                          'MsgType': 'D',
                          'ClOrdID': 'abcd',

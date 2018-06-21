@@ -32,9 +32,9 @@ class BaseTest(unittest.TestCase):
         OrderMatcher.get(u'BTCUSD').clean()
 
         self.balance1 = self.db_session.query(Balance).filter_by(id=1).first()
-        self.balance1.balance = 1000 * 2
+        self.balance1.balance = 2000 * 1.e8
         self.balance2 = self.db_session.query(Balance).filter_by(id=2).first()
-        self.balance2.balance = 1000 * 2
+        self.balance2.balance = 2000 * 1.e8
 
         self.order = self.db_session.query(Order).filter(Order.id == 1).first()
         self.order.account_id = '90000002'
@@ -42,8 +42,8 @@ class BaseTest(unittest.TestCase):
         self.order.side = '1'
         self.order.type = '2' # 限价
         self.order.price = 5
-        self.order.order_qty = 100
-        self.order.leaves_qty = 100
+        self.order.order_qty = 100 * 1.e8
+        self.order.leaves_qty = 100 * 1.e8
         self.order.cum_qty = 0
         self.order.cxl_qty = 0
         self.order.has_cxl_qty = 0
@@ -52,9 +52,9 @@ class BaseTest(unittest.TestCase):
 
         # 对手盘
         self.balance3 = self.db_session.query(Balance).filter_by(id=3).first()
-        self.balance3.balance = 1000 * 2
+        self.balance3.balance = 2000 * 1.e8
         self.balance4 = self.db_session.query(Balance).filter_by(id=4).first()
-        self.balance4.balance = 1000 * 2
+        self.balance4.balance = 2000 * 1.e8
 
         self.order1 = self.db_session.query(Order).filter(Order.id == 2).first()
         self.order1.account_id = '90000003'
@@ -62,8 +62,8 @@ class BaseTest(unittest.TestCase):
         self.order1.side = '2'
         self.order1.price = 5
         self.order1.type = '2' # 限价
-        self.order1.order_qty = 100
-        self.order1.leaves_qty = 100
+        self.order1.order_qty = 100 * 1.e8
+        self.order1.leaves_qty = 100 * 1.e8
         self.order1.cum_qty = 0
         self.order1.cxl_qty = 0
         self.order1.has_cxl_qty = 0
@@ -92,16 +92,15 @@ class UserTest(BaseTest):
         # 初始化数据
         OrderMatcher.get(u'BTCUSD').match(self.db_session, self.order1, False)
 
-        self.order.order_qty = 100
-        self.order.leaves_qty = 100
-
+        self.order.order_qty = 100 * 1.e8
+        self.order.leaves_qty = 100 * 1.e8
         OrderMatcher.get(u'BTCUSD').match(self.db_session,self.order,False,60)
 
-        self.assertTrue(self.balance1.balance == 2100)
-        self.assertTrue(self.balance2.balance == 2000)
+        self.assertTrue(self.balance1.balance == 2100 * 1.e8)
+        self.assertTrue(self.balance2.balance == 2000 * 1.e8)
 
-        self.assertTrue(self.balance3.balance == 1900)
-        self.assertTrue(self.balance4.balance == 2000)
+        self.assertTrue(self.balance3.balance == 1900 * 1.e8)
+        self.assertTrue(self.balance4.balance == 2000 * 1.e8)
         self.assertTrue(self.order.status == '2')
 
     # 部分匹配
@@ -109,16 +108,16 @@ class UserTest(BaseTest):
         # 初始化数据
         OrderMatcher.get(u'BTCUSD').match(self.db_session, self.order1, False)
 
-        self.order.order_qty = 50
-        self.order.leaves_qty = 50
+        self.order.order_qty = 50 * 1.e8
+        self.order.leaves_qty = 50 * 1.e8
 
         OrderMatcher.get(u'BTCUSD').match(self.db_session,self.order,False,60)
 
-        self.assertTrue(self.balance1.balance == 2050)
-        self.assertTrue(self.balance2.balance == 2000)
+        self.assertTrue(self.balance1.balance == 2050 * 1.e8)
+        self.assertTrue(self.balance2.balance == 2000 * 1.e8)
 
-        self.assertTrue(self.balance3.balance == 1950)
-        self.assertTrue(self.balance4.balance == 2000)
+        self.assertTrue(self.balance3.balance == 1950 * 1.e8)
+        self.assertTrue(self.balance4.balance == 2000 * 1.e8)
         self.assertTrue(self.order.status == '2')
         self.assertTrue(self.order1.status == '1')
 
@@ -127,16 +126,16 @@ class UserTest(BaseTest):
         # 初始化数据
         OrderMatcher.get(u'BTCUSD').match(self.db_session, self.order1, False)
 
-        self.order.order_qty = 200
-        self.order.leaves_qty = 200
+        self.order.order_qty = 200 * 1.e8
+        self.order.leaves_qty = 200 * 1.e8
 
         OrderMatcher.get(u'BTCUSD').match(self.db_session,self.order,False,60)
 
-        self.assertTrue(self.balance1.balance == 2100)
-        self.assertTrue(self.balance2.balance == 2000)
+        self.assertTrue(self.balance1.balance == 2100 * 1.e8)
+        self.assertTrue(self.balance2.balance == 2000 * 1.e8)
 
-        self.assertTrue(self.balance3.balance == 1900)
-        self.assertTrue(self.balance4.balance == 2000)
+        self.assertTrue(self.balance3.balance == 1900 * 1.e8)
+        self.assertTrue(self.balance4.balance == 2000 * 1.e8)
         self.assertTrue(self.order.status == '1')
         self.assertTrue(self.order1.status == '2')
 
@@ -147,18 +146,18 @@ class UserTest(BaseTest):
 
         self.order1.price = 15
 
-        self.order.order_qty = 100
-        self.order.leaves_qty = 100
+        self.order.order_qty = 100 * 1.e8
+        self.order.leaves_qty = 100 * 1.e8
         self.order.price = 5
         self.order.type = '1'
 
         OrderMatcher.get(u'BTCUSD').match(self.db_session,self.order,False,60)
 
-        self.assertTrue(self.balance1.balance == 2100)
-        self.assertTrue(self.balance2.balance == 2000)
+        self.assertTrue(self.balance1.balance == 2100 * 1.e8)
+        self.assertTrue(self.balance2.balance == 2000 * 1.e8)
 
-        self.assertTrue(self.balance3.balance == 1900)
-        self.assertTrue(self.balance4.balance == 2000)
+        self.assertTrue(self.balance3.balance == 1900 * 1.e8)
+        self.assertTrue(self.balance4.balance == 2000 * 1.e8)
         self.assertTrue(self.order.status == '2')
         self.assertTrue(self.order1.status == '2')
 
@@ -169,16 +168,16 @@ class UserTest(BaseTest):
 
         self.order1.account_id = '90000002'
 
-        self.order.order_qty = 100
-        self.order.leaves_qty = 100
+        self.order.order_qty = 100 * 1.e8
+        self.order.leaves_qty = 100 * 1.e8
         self.order.price = 5
 
         OrderMatcher.get(u'BTCUSD').match(self.db_session,self.order,False,60)
 
-        self.assertTrue(self.balance1.balance == 2000)
-        self.assertTrue(self.balance2.balance == 2000)
+        self.assertTrue(self.balance1.balance == 2000 * 1.e8)
+        self.assertTrue(self.balance2.balance == 2000 * 1.e8)
 
-        self.assertTrue(self.balance3.balance == 2000)
-        self.assertTrue(self.balance4.balance == 2000)
+        self.assertTrue(self.balance3.balance == 2000 * 1.e8)
+        self.assertTrue(self.balance4.balance == 2000 * 1.e8)
         self.assertTrue(self.order.status == '0')
         self.assertTrue(self.order1.status == '4')
