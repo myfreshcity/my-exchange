@@ -455,7 +455,7 @@ class WebSocketHandler(websocket.WebSocketHandler):
                 market_depth,
                 entries,
                 req_id,
-                self.is_broker())
+                self)
             self.write_message(str(json.dumps(md, cls=JsonEncoder)))
 
             # Snapshot + Updates

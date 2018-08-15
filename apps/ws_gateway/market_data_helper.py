@@ -433,9 +433,10 @@ def generate_security_status(symbol, req_id):
 
     return ss
 
-def generate_md_full_refresh(symbol, market_depth, entries, req_id, show_username=False):
+def generate_md_full_refresh(symbol, market_depth, entries, req_id, handler):
+    show_username = handler.is_broker()
     entry_list = []
-    md_subscriber = MarketDataSubscriber.get(symbol)
+    md_subscriber = MarketDataSubscriber.get(symbol, handler.application)
 
     for entry_type in entries:
         if entry_type == '0' or entry_type == '1':

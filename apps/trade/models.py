@@ -10,7 +10,7 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean, Numeric, Text
 from sqlalchemy import ForeignKey
 from sqlalchemy import desc, func
 
-from pyblinktrade.utils import smart_str
+from apps.pyblinktrade.utils import smart_str
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.sql.expression import and_, or_
