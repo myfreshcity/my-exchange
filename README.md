@@ -9,6 +9,9 @@ virtualenvs 配置： virtualenv venv
 
 退出 virtualenvs： deactivate
 
+#安装mysql
+pip install mysql-connector
+
 ```
 $ pip install -r requirements.txt
 ```
